@@ -11,6 +11,10 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
+td:hover{
+    cursor: pointer;
+}
+
 th {
     background-color: #ffcb05;
     font-weight: bold;
@@ -41,4 +45,18 @@ h5{
     font-weight: bold;
     color: rgb(255, 203, 5);
     text-shadow: 2px 2px #333;
+}
+
+h1.NombrePokemon{
+    font-weight: bold;
+    color: rgb(255, 203, 5);
+    text-shadow: 2px 2px #333;
+    margin-top: -3%;
+    margin-left: 43%;
+    margin-bottom: -1%;
+}
+
+img.imagenPokemon{
+    width: 27%;
+    padding-left: 35%;
 }

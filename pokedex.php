@@ -7,14 +7,19 @@
             function filtrar(filtrado, max, min, stringFiltrado){
                 window.location.replace(window.location.href.split('?')[0] + "?filtrado=" + filtrado + "&max=" + max + "&min=" + min + "&stringFiltrado=" + stringFiltrado);
             }
+            function verPokemon(numPoke){
+                window.location.replace("pokemon.php?numPoke=" + numPoke);
+            }
 </script>
 
 <?php
 include 'includes/header.php'; //Incluyo el archivo header.php para que aparezca en la página web, 
                               //y así no tener que escribir el código de la cabecera en cada archivo
 include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo código de conexión a la base de datos, uso el archivo conexion.php
-// arrays usados para hacer cabezeras clickables para la ordenación por columnas de manera procedural a partir de los arrays
 
+
+// arrays usados para hacer cabezeras clickables para la ordenación por columnas de manera procedural a partir de los arrays
+        
         //nombre de las columnas en la BBDD
         $columnas = array("num_pokedex","imagen","nombre","peso","altura","ps","ataque","defensa","especial","velocidad");
 
@@ -57,7 +62,7 @@ include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo cód
                 if($tipoFiltroActual == "numero"){ //Si es de tipo número primero se comprueba si existen las variables máximo y mínimo
                                                     //Si no existen se ponen por defecto max=9999999 y min=0
                     if(!$max){
-                        $max = 9999999;
+                        $max = 10000;
                     }
                     if(!$min){
                         $min = 0;
@@ -105,10 +110,10 @@ include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo cód
                 echo "<tr>";
                 foreach ($fila as $filaa) {
                     if($filaa == $fila['imagen']){ //Si es la fila de las imágenes meto la imagen en la celda
-                        echo "<td><img src='$filaa' width='100' height='100'></td>";
+                        echo "<td onclick='verPokemon(" . $fila['num_pokedex'] . ")'><img src='$filaa' width='100' height='100'></td>";
                     }
                     else{
-                        echo "<td>$filaa</td>";
+                        echo "<td onclick='verPokemon(" . $fila['num_pokedex'] . ")'>$filaa</td>";
                     }
                 }
                 echo "</tr>";
