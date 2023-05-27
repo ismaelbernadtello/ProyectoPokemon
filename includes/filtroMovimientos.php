@@ -22,7 +22,7 @@
                     <input type="number" name="valorMaximo" id="valorMaximo">
                 </td>
                 <td>
-                <label for="inputNombre">Nombre pokemon: </label>
+                <label for="inputNombre">Texto: </label>
                 <input type="text" name="inputNombre" id="inputNombre" maxlenght="25">
                 <button onclick="filtrar(selecionFiltro.value, valorMaximo.value, valorMinimo.value, inputNombre.value)">Filtrar</button>
                 </td>

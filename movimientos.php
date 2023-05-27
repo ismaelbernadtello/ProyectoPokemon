@@ -18,18 +18,38 @@ include 'includes/header.php'; //Incluyo el archivo header.php para que aparezca
 include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo código de conexión a la base de datos, uso el archivo conexion.php
 
 
-// arrays usados para hacer cabezeras clickables para la ordenación por columnas de manera procedural a partir de los arrays
-        
+        // arrays usados para hacer cabezeras clickables para la ordenación por columnas a partir de los arrays
+            
         //nombre de las columnas en la BBDD
-        $columnas = array("num_pokedex","imagen","nombre","peso","altura","ps","ataque","defensa","especial","velocidad");
+        $columnas = array("id_movimiento","nombre","potencia","precision_mov","descripcion","pp","prioridad",
+                            "tipo","tipo_ataque","probabilidad_efecto_secundario","efecto_secundario","tipo_aprendizaje");
 
         //nombre que aparecerá en la página en los th
-        $nomColumnas = array("Nº Pokedex", "Imagen", "Pokemon", "Peso", "Altura", "PS", "Ataque", "Defensa", "Especial", "Velocidad");
+        $nomColumnas = array("Nº Movimiento", "Nombre Movimiento", "Potencia", "Precisión", "Descripción", "PP", "Prioridad",
+                            "Tipo", "Tipo Ataque", "Probabilidad Efecto Secundario", "Efecto Secundario", "Tipo Aprendizaje");
 
         // array usado para elegir que tipo de filtrado se usa
-        $tipoFiltrado = array("numero","numero","texto", "numero", "numero", "numero", "numero", "numero", "numero", "numero");
+        $tipoFiltrado = array("numero","texto","numero","numero","texto","numero","numero",
+                            "texto","texto","numero","texto","texto");
                             //1 Num pokedex, 2 nombre pokemon, 3 peso, 4 altura
         
+
+        $sql = "SELECT DISTINCT m.id_movimiento, m.nombre, m.potencia, m.precision_mov, m.descripcion, m.pp, m.prioridad,
+                        t.nombre as tipo,
+                        ta.tipo as tipo_ataque,
+                        mes.probabilidad as probabilidad_efecto_secundario,
+                        es.efecto_secundario as efecto_secundario,
+                        tfa.tipo_aprendizaje as tipo_aprendizaje
+                FROM movimiento as m
+                        INNER JOIN tipo as t ON m.id_tipo = t.id_tipo
+                        INNER JOIN tipo_ataque as ta ON t.id_tipo_ataque = ta.id_tipo_ataque
+                        INNER JOIN movimiento_efecto_secundario as mes ON m.id_movimiento = mes.id_movimiento
+                        INNER JOIN efecto_secundario as es ON mes.id_efecto_secundario = es.id_efecto_secundario
+                        INNER JOIN pokemon_movimiento_forma as pmf ON m.id_movimiento = pmf.id_movimiento
+                        INNER JOIN forma_aprendizaje as fa ON pmf.id_forma_aprendizaje = fa.id_forma_aprendizaje
+                        INNER JOIN tipo_forma_aprendizaje as tfa ON fa.id_tipo_aprendizaje = tfa.id_tipo_aprendizaje"; 
+
+
         if($_GET['filtrado']){ //Si se ha filtrado algo, se obtiene el valor de los campos
             $filtrado = $_GET['filtrado'];
             for($i = 0; $i < count($tipoFiltrado); $i++){ //Con count obtengo el número de elementos del array
@@ -54,9 +74,7 @@ include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo cód
                 $asc = true;
             }
         }
-                            //Pongo el as num_pokedex para evitar la ambiguedad
-            $sql = "SELECT p.numero_pokedex as num_pokedex, p.imagen, p.nombre, p.peso, p.altura, e.ps, e.ataque, e.defensa, e.especial, e.velocidad
-            FROM pokemon as p, estadisticas_base as e WHERE p.numero_pokedex = e.numero_pokedex";
+            
 
             if($tipoFiltroActual){ //Si existe el tipo de filtro, se realiza el filtrado
                 if($tipoFiltroActual == "numero"){ //Si es de tipo número primero se comprueba si existen las variables máximo y mínimo
@@ -84,7 +102,7 @@ include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo cód
             echo "<script>console.log(\"$sql\")</script>";
             $resultado = mysqli_query($mysqli, $sql);
             //Filtros visibles de la tabla
-            include 'includes/filtroPokedex.php';
+            include 'includes/filtroMovimientos.php';
 
             //Resultado visible de la tabla
             echo "<table>";
@@ -109,12 +127,7 @@ include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo cód
             while($fila = mysqli_fetch_assoc($resultado)){ 
                 echo "<tr>";
                 foreach ($fila as $filaa) {
-                    if($filaa == $fila['imagen']){ //Si es la fila de las imágenes meto la imagen en la celda
-                        echo "<td onclick='verPokemon(" . $fila['num_pokedex'] . ")'><img src='$filaa' width='100' height='100'></td>";
-                    }
-                    else{
-                        echo "<td onclick='verPokemon(" . $fila['num_pokedex'] . ")'>$filaa</td>";
-                    }
+                    echo "<td>$filaa</td>";
                 }
                 echo "</tr>";
             }

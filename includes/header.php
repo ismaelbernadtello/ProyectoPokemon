@@ -10,9 +10,11 @@
 		<h1>BDDT Pokemon - Ismael Bernad Tello</h1>
 		<ul>
 			<li class="opcionesMenu"><a href="index.php">Inicio</a></li>
+			<li class="opcionesMenu"><a href="movimientos.php">Movimientos</a></li>
 			<li class="opcionesMenu"><a href="pokedex.php">Pokedex</a></li>
 			<li class="opcionesMenu"><a href="formularioAnyadirPokemon.php">Añadir Pokemon</a></li>
-			<li class="opcionesMenu"><a href="borrar.php">Borrar</a></li>
+			<li class="opcionesMenu"><a href="modificarPokemon.php">Modificar Pokemon</a></li>
+			<li class="opcionesMenu"><a href="borrarPokemon.php">Borrar Pokemon</a></li>
 		</ul>
 	</nav>
 </body>
