@@ -55,6 +55,15 @@ h1.NombrePokemon{
     margin-left: 43%;
     margin-bottom: -1%;
 }
+h1.evolucionClick{
+    font-weight: bold;
+    color: rgb(255, 203, 5);
+    text-shadow: 2px 2px #333;
+    margin-top: -3%;
+    margin-left: 43%;
+    margin-bottom: -1%;
+    cursor: pointer;
+}
 
 img.imagenPokemon{
     width: 27%;

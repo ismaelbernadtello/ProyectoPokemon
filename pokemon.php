@@ -1,4 +1,9 @@
 <link rel="stylesheet" type="text/css" href="css/estiloPokedex.css"> 
+<script>
+            function verPokemon(numPoke){
+                window.location.replace("pokemon.php?numPoke=" + numPoke);
+            }
+</script>
 
         <?php
             include 'includes/header.php'; //Incluyo el archivo header.php para que aparezca en la página web, 
@@ -18,6 +23,16 @@
 
             $resultado = mysqli_query($mysqli, $sql);
             
+            //Si el pokemon no es de la base original consulto solo para sacar los datos de pokemon y de estadísticas
+            if($resultado){
+                $sql = "SELECT p.numero_pokedex as num_pokedex, p.imagen, p.nombre, p.peso, p.altura, 
+                                                            e.ps, e.ataque, e.defensa, e.especial, e.velocidad
+                    FROM pokemon as p
+                    INNER JOIN estadisticas_base as e ON p.numero_pokedex = e.numero_pokedex
+                    WHERE  p.numero_pokedex = $numPok";
+                $resultado = mysqli_query($mysqli, $sql);
+            }
+
             //Calculo el numero de tipos que tiene el pokemon y cuales son
                 $NumTipos = "SELECT COUNT(t.nombre) as numTipos
                                 FROM pokemon as p
@@ -54,7 +69,18 @@
                     $tipo2 = $filaTipo2['nombreTipo'];
                     // echo "<h1 class='NombrePokemon'>" . $tipo2 . "</h1>"; Comprobación
                 }
-            
+                
+            //Llamo a la función que me dice la preevolución y la evolución posterior
+            //Si no tiene no lo muestro por pantalla
+            $nomEvoluciona_de = "SELECT nombre, numero_pokedex FROM pokemon WHERE numero_pokedex = evoluciona_de($numPok)";
+                    $sqlEvoluciona_de = mysqli_query($mysqli,$nomEvoluciona_de);
+                    $filaEvoluciona_de = mysqli_fetch_array($sqlEvoluciona_de);
+
+            $nomEvoluciona_a = "SELECT nombre, numero_pokedex FROM pokemon WHERE numero_pokedex = evoluciona_a($numPok)";
+                    $sqlEvoluciona_a = mysqli_query($mysqli,$nomEvoluciona_a);
+                    $filaEvoluciona_a = mysqli_fetch_array($sqlEvoluciona_a);
+
+
             $fila = mysqli_fetch_array($resultado);
                 echo "<img src=".$fila['imagen']." class='imagenPokemon'>";
                 echo "<h1 class='NombrePokemon'>" . $fila['nombre'] . "</h1>";
@@ -65,7 +91,18 @@
                 else{
                     echo "<h1 class='NombrePokemon'> Tipo: " . $fila['nombreTipo'] . "</h1>";
                 }
+                //Si tiene evoluciones las muestro:
+                if($filaEvoluciona_de != NULL){
+                    echo "<h1 class='evolucionClick' onclick='verPokemon(" . $filaEvoluciona_de['numero_pokedex'] . ")'> Evolución previa: " . $filaEvoluciona_de['nombre'] . "</h1>";
+                }
+                if($filaEvoluciona_a != NULL){
+                    echo "<h1 class='evolucionClick' onclick='verPokemon(" . $filaEvoluciona_a['numero_pokedex'] . ")'> Evolución siguiente: " . $filaEvoluciona_a['nombre'] . "</h1>";
+                }
+                
+
                 echo "<table>";
+                echo "<th> Modificar Pokemon </th>";
+                echo "<th> Eliminar Pokemon </th>";
                     echo "<th> Nº Pokedex </th>";
                     echo "<th> Nombre </th>";
                     echo "<th> Peso </th>";
@@ -76,6 +113,8 @@
                     echo "<th> Especial </th>";
                     echo "<th> Velocidad </th>";
                     echo "<tr>";
+                    echo "<td> <a href='formularioModificarPokemon.php?numPokedex=" . $fila['num_pokedex'] . "'> <img src='./images/modificar.png' width='45px'> </td></a>";
+                    echo "<td> <a href='eliminarPokemon.php?numPokedex=" . $fila['num_pokedex'] . "'> <img src='./images/eliminar.png' width='45px'> </a> </td>";
                     echo "<td>" . $fila['num_pokedex'] . "</td>";
                     echo "<td>" . $fila['nombre'] . "</td>";
                     echo "<td>" . $fila['peso'] . "</td>";

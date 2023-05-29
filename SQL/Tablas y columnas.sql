@@ -1,5 +1,9 @@
+--Elimino un registro de charmander que estaba mal en la base original y me causa problemas
+DELETE FROM evoluciona_de WHERE pokemon_evolucionado = 5 AND pokemon_origen = 6;
+
 -- Añadir columna imagen a la tabla pokemon
 ALTER TABLE pokemon ADD(imagen VARCHAR(100) DEFAULT 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png');
+CALL insertarImagenesPokemon(); -- Dentro del procedimiento hay un cursor con el que se llama a la función que añade la imagen para cada pokemon
 
 --Borrado Indices Pokemon
 ALTER TABLE pokemon DROP INDEX indiceNombrePokemon;
