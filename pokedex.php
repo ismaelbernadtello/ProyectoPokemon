@@ -18,7 +18,7 @@ include 'includes/header.php'; //Incluyo el archivo header.php para que aparezca
 include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo código de conexión a la base de datos, uso el archivo conexion.php
 
 
-// arrays usados para hacer cabezeras clickables para la ordenación por columnas de manera procedural a partir de los arrays
+// arrays usados para hacer cabezeras clickeables para la ordenación por columnas de manera procedural a partir de los arrays
         
         //nombre de las columnas en la BBDD
         $columnas = array("num_pokedex","imagen","nombre","peso","altura","ps","ataque","defensa","especial","velocidad");

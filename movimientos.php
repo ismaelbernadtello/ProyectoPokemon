@@ -22,33 +22,28 @@ include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo cód
             
         //nombre de las columnas en la BBDD
         $columnas = array("id_movimiento","nombre","potencia","precision_mov","descripcion","pp","prioridad",
-                            "tipo","tipo_ataque","probabilidad_efecto_secundario","efecto_secundario","tipo_aprendizaje");
+                            "tipo","tipo_ataque","probabilidad_efecto_secundario","efecto_secundario");
 
         //nombre que aparecerá en la página en los th
         $nomColumnas = array("Nº Movimiento", "Nombre Movimiento", "Potencia", "Precisión", "Descripción", "PP", "Prioridad",
-                            "Tipo", "Tipo Ataque", "Probabilidad Efecto Secundario", "Efecto Secundario", "Tipo Aprendizaje");
+                            "Tipo", "Tipo Ataque", "Probabilidad Efecto Secundario", "Efecto Secundario");
 
         // array usado para elegir que tipo de filtrado se usa
         $tipoFiltrado = array("numero","texto","numero","numero","texto","numero","numero",
-                            "texto","texto","numero","texto","texto");
+                            "texto","texto","numero","texto");
                             //1 Num pokedex, 2 nombre pokemon, 3 peso, 4 altura
         
 
-        $sql = "SELECT DISTINCT m.id_movimiento, m.nombre, m.potencia, m.precision_mov, m.descripcion, m.pp, m.prioridad,
+        $sql = "SELECT m.id_movimiento, m.nombre, m.potencia, m.precision_mov, m.descripcion, m.pp, m.prioridad,
                         t.nombre as tipo,
                         ta.tipo as tipo_ataque,
                         mes.probabilidad as probabilidad_efecto_secundario,
-                        es.efecto_secundario as efecto_secundario,
-                        tfa.tipo_aprendizaje as tipo_aprendizaje
+                        es.efecto_secundario as efecto_secundario
                 FROM movimiento as m
                         INNER JOIN tipo as t ON m.id_tipo = t.id_tipo
                         INNER JOIN tipo_ataque as ta ON t.id_tipo_ataque = ta.id_tipo_ataque
-                        INNER JOIN movimiento_efecto_secundario as mes ON m.id_movimiento = mes.id_movimiento
-                        INNER JOIN efecto_secundario as es ON mes.id_efecto_secundario = es.id_efecto_secundario
-                        INNER JOIN pokemon_movimiento_forma as pmf ON m.id_movimiento = pmf.id_movimiento
-                        INNER JOIN forma_aprendizaje as fa ON pmf.id_forma_aprendizaje = fa.id_forma_aprendizaje
-                        INNER JOIN tipo_forma_aprendizaje as tfa ON fa.id_tipo_aprendizaje = tfa.id_tipo_aprendizaje"; 
-
+                        LEFT JOIN movimiento_efecto_secundario as mes ON m.id_movimiento = mes.id_movimiento
+                        LEFT JOIN efecto_secundario as es ON mes.id_efecto_secundario = es.id_efecto_secundario"; 
 
         if($_GET['filtrado']){ //Si se ha filtrado algo, se obtiene el valor de los campos
             $filtrado = $_GET['filtrado'];
@@ -138,9 +133,5 @@ include 'config/abrirConexion.php'; //Para evitar escribir siempre el mismo cód
 
             include 'includes/footer.php'; //Incluyo el archivo footer.php para que aparezca en la página web, 
             //y así no tener que escribir el código del pie de página en cada archivo
-
         ?>
-
-        
-
 

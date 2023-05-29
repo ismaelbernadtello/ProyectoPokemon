@@ -5,10 +5,10 @@ function exception_handler(Throwable $exception) {
 }
 
 //Conexión remota
-// $mysqli = mysqli_connect("pokemondb.cfm9djelmdkg.us-east-1.rds.amazonaws.com","admin","adminadmin4312","pokemondb"); //Conecto a la base de datos
+$mysqli = mysqli_connect("pokemondb.cfm9djelmdkg.us-east-1.rds.amazonaws.com","admin","adminadmin4312","pokemondb"); //Conecto a la base de datos
 
 //Conexión local
-$mysqli = mysqli_connect("172.17.0.2","root","adminadmin","pokemondb");
+// $mysqli = mysqli_connect("172.17.0.2","root","adminadmin","pokemondb");
 
 
 //echo "conectado a database"; Para comprobar que la conexión se ha realizado correctamente y verlo en el navegador
